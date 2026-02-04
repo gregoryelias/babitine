@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 
 function clamp(n: number, min: number, max: number) {
@@ -44,39 +44,81 @@ function FloatingCuties() {
 }
 
 function StarSprinkles() {
+  const [things, setThings] = useState<
+    Array<{
+      isCat: boolean;
+      top: number;
+      delay: number;
+      duration: number;
+      size: number;
+      spin: number;
+      star?: string;
+    }>
+  >([]);
+
+  useEffect(() => {
+    const next = Array.from({ length: 18 }).map((_, i) => {
+      const top = Math.random() * 110;
+      const delay = Math.random() * 6;
+      const duration = 3.5 + Math.random() * 3.5;
+      const size = 16 + Math.random() * 22;
+      const spin = 360 + Math.random() * 720;
+
+      const isCat = Math.random() < 0.25;
+      const star = i % 3 === 0 ? "⭐️" : i % 3 === 1 ? "✨" : "🌟";
+
+      return { isCat, top, delay, duration, size, spin, star };
+    });
+
+    setThings(next);
+  }, []);
+
+  if (things.length === 0) return null;
+
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {Array.from({ length: 18 }).map((_, i) => {
-        const startY = Math.random() * 110; // where it starts vertically
-        const delay = Math.random() * 6;
-        const duration = 3.5 + Math.random() * 3.5;
-        const size = 12 + Math.random() * 18;
-        const spin = 180 + Math.random() * 360;
-
-        // mix of cuti stars
-        const star = i % 3 === 0 ? "⭐️" : i % 3 === 1 ? "✨" : "🌟";
-
-        return (
+      {things.map((t, i) =>
+        t.isCat ? (
+          <span
+            key={i}
+            className="absolute animate-shooting-star animate-spinny-babi opacity-95"
+            style={{
+              top: `${t.top}%`,
+              left: `-20%`,
+              width: `${t.size * 1.6}px`,
+              height: `${t.size * 1.6}px`,
+              animationDelay: `${t.delay}s`,
+              animationDuration: `${t.duration}s`,
+              ["--spin" as any]: `${t.spin}deg`,
+            }}
+          >
+            <Image
+              src="/babi.jpg"
+              alt="flying babi"
+              fill
+              className="object-cover rounded-full"
+            />
+          </span>
+        ) : (
           <span
             key={i}
             className="absolute animate-shooting-star select-none opacity-90"
             style={{
-              top: `${startY}%`,
+              top: `${t.top}%`,
               left: `-20%`,
-              fontSize: `${size}px`,
-              animationDelay: `${delay}s`,
-              animationDuration: `${duration}s`,
-              ["--spin" as any]: `${spin}deg`,
+              fontSize: `${t.size}px`,
+              animationDelay: `${t.delay}s`,
+              animationDuration: `${t.duration}s`,
+              ["--spin" as any]: `${t.spin}deg`,
             }}
           >
-            {star}
+            {t.star}
           </span>
-        );
-      })}
+        )
+      )}
     </div>
   );
 }
-
 
 export default function Page() {
   const [accepted, setAccepted] = useState(false);
