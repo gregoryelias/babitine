@@ -158,7 +158,6 @@ function FloatingCuties() {
 function StarSprinkles() {
   const [things, setThings] = useState<
     Array<{
-      isCat: boolean;
       top: number;
       delay: number;
       duration: number;
@@ -176,10 +175,9 @@ function StarSprinkles() {
       const size = 16 + Math.random() * 22;
       const spin = 360 + Math.random() * 720;
 
-      const isCat = Math.random() < 0.25;
       const star = i % 3 === 0 ? "⭐️" : i % 3 === 1 ? "✨" : "🌟";
 
-      return { isCat, top, delay, duration, size, spin, star };
+      return { top, delay, duration, size, spin, star };
     });
 
     setThings(next);
@@ -189,45 +187,22 @@ function StarSprinkles() {
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {things.map((t, i) =>
-        t.isCat ? (
-          <span
-            key={i}
-            className="absolute animate-shooting-star animate-spinny-babi opacity-95"
-            style={{
-              top: `${t.top}%`,
-              left: `-20%`,
-              width: `${t.size * 1.6}px`,
-              height: `${t.size * 1.6}px`,
-              animationDelay: `${t.delay}s`,
-              animationDuration: `${t.duration}s`,
-              ["--spin" as any]: `${t.spin}deg`,
-            }}
-          >
-            <Image
-              src="/babi.jpg"
-              alt="flying babi"
-              fill
-              className="object-cover rounded-full"
-            />
-          </span>
-        ) : (
-          <span
-            key={i}
-            className="absolute animate-shooting-star select-none opacity-90"
-            style={{
-              top: `${t.top}%`,
-              left: `-20%`,
-              fontSize: `${t.size}px`,
-              animationDelay: `${t.delay}s`,
-              animationDuration: `${t.duration}s`,
-              ["--spin" as any]: `${t.spin}deg`,
-            }}
-          >
-            {t.star}
-          </span>
-        ),
-      )}
+      {things.map((t, i) => (
+        <span
+          key={i}
+          className="absolute animate-shooting-star select-none opacity-90"
+          style={{
+            top: `${t.top}%`,
+            left: `-20%`,
+            fontSize: `${t.size}px`,
+            animationDelay: `${t.delay}s`,
+            animationDuration: `${t.duration}s`,
+            ["--spin" as any]: `${t.spin}deg`,
+          }}
+        >
+          {t.star}
+        </span>
+      ))}
     </div>
   );
 }
@@ -326,8 +301,8 @@ export default function Page() {
                 world.
               </p>
               <p className="mt-3">
-                i will be there for BABYAY, neo matter how wauri u may become, or
-                what situation we find ourselves in.
+                i will be there for BABYAY, neo matter how wauri u may become,
+                or what situation we find ourselves in.
               </p>
               <p className="mt-3">
                 i will be always lovi my little babi... forever and ever 💗
