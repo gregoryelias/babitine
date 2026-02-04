@@ -76,7 +76,7 @@ function StarSprinkles() {
   >([]);
 
   useEffect(() => {
-    const next = Array.from({ length: 180 }).map((_, i) => {
+    const next = Array.from({ length: 18 }).map((_, i) => {
       const top = Math.random() * 110;
       const delay = Math.random() * 6;
       const duration = 3.5 + Math.random() * 3.5;
@@ -104,8 +104,8 @@ function StarSprinkles() {
             style={{
               top: `${t.top}%`,
               left: `-20%`,
-              width: `${t.size * 40}px`,
-              height: `${t.size * 40}px`,
+              width: `${t.size * 1.6}px`,
+              height: `${t.size * 1.6}px`,
               animationDelay: `${t.delay}s`,
               animationDuration: `${t.duration}s`,
               ["--spin" as any]: `${t.spin}deg`,
