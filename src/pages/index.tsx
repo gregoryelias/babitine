@@ -9,6 +9,99 @@ function clamp(n: number, min: number, max: number) {
 
 const CATS = ["🐱", "😺", "😸", "😻", "🐈", "🌺", "💗", "💞", "✨", "🌸"];
 
+function LoveEnvelope({ onOpen }: { onOpen: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="absolute right-5 top-5 z-20 group"
+      aria-label="Open letter"
+    >
+      <div className="env env-openable">
+        <div className="env-flap" />
+        <div className="env-body" />
+        <div className="env-sparkle env-sparkle-on">✨</div>
+      </div>
+    </button>
+  );
+}
+
+function LetterModal({
+  open,
+  onClose,
+  title = "my little babi 💗",
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+}) {
+  // close on ESC
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60]">
+      {/* backdrop */}
+      <button
+        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        aria-label="Close letter"
+        onClick={onClose}
+        type="button"
+      />
+
+      {/* modal */}
+      <div className="absolute inset-0 flex items-center justify-center p-4">
+        <div className="letter-modal w-full max-w-lg">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-2xl font-extrabold text-rose-700">
+                {title}
+              </div>
+              <div className="mt-1 text-sm text-rose-900/70">
+                i lovi u plentifully 🥺
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl px-3 py-2 text-rose-700 font-semibold hover:bg-rose-50 border border-rose-200 shadow-sm transition active:scale-95"
+            >
+              closi ✖
+            </button>
+          </div>
+
+          <div className="mt-5 text-rose-900/80 leading-relaxed">
+            {children}
+          </div>
+
+          <div className="mt-6 flex items-center justify-end">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-2xl bg-rose-600 px-6 py-3 text-white font-semibold shadow-lg hover:bg-rose-700 transition active:scale-95"
+            >
+              oki 😻
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FloatingCuties() {
   const [items, setItems] = useState<
     Array<{
@@ -133,7 +226,7 @@ function StarSprinkles() {
           >
             {t.star}
           </span>
-        )
+        ),
       )}
     </div>
   );
@@ -144,9 +237,11 @@ export default function Page() {
   const [noPos, setNoPos] = useState({ x: 0, y: 0 });
   const [noClicks, setNoClicks] = useState(0);
 
-  const [bursts, setBursts] = useState<Array<{ id: string; x: number; y: number }>>(
-    []
-  );
+  const [bursts, setBursts] = useState<
+    Array<{ id: string; x: number; y: number }>
+  >([]);
+
+  const [letterOpen, setLetterOpen] = useState(false);
 
   const phrases = useMemo(
     () => [
@@ -157,7 +252,7 @@ export default function Page() {
       "u neo lovi me? 😭",
       "u must clicki yesi 💔",
     ],
-    []
+    [],
   );
 
   const popBurst = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -193,9 +288,17 @@ export default function Page() {
       {/* ✅ Bursts layer mounted ONCE */}
       <div className="pointer-events-none fixed inset-0 z-50">
         {bursts.map((b) => (
-          <span key={b.id} className="absolute burst" style={{ left: b.x, top: b.y }}>
+          <span
+            key={b.id}
+            className="absolute burst"
+            style={{ left: b.x, top: b.y }}
+          >
             {Array.from({ length: 14 }).map((_, i) => (
-              <span key={i} className="burst-piece" style={{ ["--i" as any]: i }} />
+              <span
+                key={i}
+                className="burst-piece"
+                style={{ ["--i" as any]: i }}
+              />
             ))}
           </span>
         ))}
@@ -208,8 +311,37 @@ export default function Page() {
 
         {accepted ? (
           <>
+            <LoveEnvelope onOpen={() => setLetterOpen(true)} />
+
+            <LetterModal open={letterOpen} onClose={() => setLetterOpen(false)}>
+              <p>
+                u said <span className="font-bold text-rose-700">yaur</span>… so
+                neow we are babis forever!!! 🥺✨
+              </p>
+              <p className="mt-3">
+                i will protect u from all seadness and wauris.
+              </p>
+              <p className="mt-3">
+                i will give you all the kissis, huggies, and cuddlis in the
+                world.
+              </p>
+              <p className="mt-3">
+                i will be there for BABYAY, neo matter how wauri u may become, or
+                what situation we find ourselves in.
+              </p>
+              <p className="mt-3">
+                i will be always lovi my little babi... forever and ever 💗
+              </p>
+              <p className="mt-3">
+                signed: <span className="font-semibold text-rose-700">bab</span>{" "}
+                😽
+              </p>
+              <p className="mt-3 text-rose-700/70">nyum 😻</p>
+            </LetterModal>
+
             <div className="inline-flex items-center gap-2 rounded-full bg-rose-100/80 px-4 py-2 text-rose-700 font-semibold shadow-sm border border-rose-200/60">
-              <span className="animate-pulse">💖</span> Approved by the Ceati Council
+              <span className="animate-pulse">💖</span> Approved by the Ceati
+              Council
               <span className="animate-pulse">🌺</span>
             </div>
 
@@ -251,7 +383,8 @@ export default function Page() {
         ) : (
           <>
             <div className="inline-flex items-center gap-2 rounded-full bg-rose-100/80 px-4 py-2 text-rose-700 font-semibold shadow-sm border border-rose-200/60">
-              <span className="animate-pulse">🌸</span> Official Babitime Proposal
+              <span className="animate-pulse">🌸</span> Official Babitime
+              Proposal
               <span className="animate-pulse">✨</span>
             </div>
 
@@ -271,6 +404,7 @@ export default function Page() {
                 onClick={(e) => {
                   popBurst(e);
                   setAccepted(true);
+                  setLetterOpen(false);
                 }}
               >
                 <span className="inline-flex items-center gap-2">Yaur 😻</span>
@@ -286,7 +420,11 @@ export default function Page() {
                     moveNo();
                   }}
                 >
-                  <span className={noClicks > 0 ? "animate-shiver inline-block" : ""}>
+                  <span
+                    className={
+                      noClicks > 0 ? "animate-shiver inline-block" : ""
+                    }
+                  >
                     Naur 😼
                   </span>
                 </button>
