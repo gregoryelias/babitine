@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@keyframes floaty {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  50% {
+    transform: translate(var(--drift, 12px), -22px) rotate(6deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+.animate-floaty {
+  animation-name: floaty;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+
 @keyframes shooting-star {
   0% {
     transform: translate(-10vw, 0) rotate(0deg);
