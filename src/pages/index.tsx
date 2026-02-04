@@ -43,6 +43,41 @@ function FloatingCuties() {
   );
 }
 
+function StarSprinkles() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {Array.from({ length: 18 }).map((_, i) => {
+        const startY = Math.random() * 110; // where it starts vertically
+        const delay = Math.random() * 6;
+        const duration = 3.5 + Math.random() * 3.5;
+        const size = 12 + Math.random() * 18;
+        const spin = 180 + Math.random() * 360;
+
+        // mix of cuti stars
+        const star = i % 3 === 0 ? "⭐️" : i % 3 === 1 ? "✨" : "🌟";
+
+        return (
+          <span
+            key={i}
+            className="absolute animate-shooting-star select-none opacity-90"
+            style={{
+              top: `${startY}%`,
+              left: `-20%`,
+              fontSize: `${size}px`,
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+              ["--spin" as any]: `${spin}deg`,
+            }}
+          >
+            {star}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+
 export default function Page() {
   const [accepted, setAccepted] = useState(false);
   const [noPos, setNoPos] = useState({ x: 0, y: 0 });
@@ -76,6 +111,7 @@ export default function Page() {
     return (
       <main className="relative min-h-screen bg-gradient-to-b from-pink-50 via-rose-50 to-rose-100 flex items-center justify-center p-6">
         <FloatingCuties />
+        <StarSprinkles />
 
         <div className="relative z-10 w-full max-w-xl rounded-[2rem] bg-white/75 backdrop-blur-xl shadow-2xl p-10 text-center border border-white/60 ring-1 ring-rose-200/50 overflow-hidden">
           {/* soft glow */}
@@ -160,6 +196,7 @@ export default function Page() {
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-pink-50 via-rose-50 to-rose-100 flex items-center justify-center p-6">
       <FloatingCuties />
+      <StarSprinkles />
 
       <div className="relative z-10 w-full max-w-xl rounded-[2rem] bg-white/75 backdrop-blur-xl shadow-2xl p-10 text-center border border-white/60 ring-1 ring-rose-200/50 overflow-hidden">
         {/* soft glow blobs */}

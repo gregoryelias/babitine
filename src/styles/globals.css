@@ -1,2 +1,22 @@
 @import "tailwindcss";
 
+@keyframes shooting-star {
+  0% {
+    transform: translate(-10vw, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(140vw, -35vh) rotate(var(--spin, 260deg));
+    opacity: 0;
+  }
+}
+
+.animate-shooting-star {
+  animation-name: shooting-star;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  filter: drop-shadow(0 6px 10px rgba(244, 63, 94, 0.25));
+}
