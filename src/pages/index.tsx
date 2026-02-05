@@ -370,7 +370,7 @@ export default function Page() {
               <p className="mt-3">
                 i will be there for BABYAY, neo matter how wauri u may become, or what situation we find ourselves in.
               </p>
-              <p className="mt-3">i will be always lovi my little babi... forever and ever 💗</p>
+              <p className="mt-3">i will be always lovi my little babi... forever and ever!!! 💗</p>
               <p className="mt-3">
                 signed: <span className="font-semibold text-rose-700">bab</span> 😽
               </p>
