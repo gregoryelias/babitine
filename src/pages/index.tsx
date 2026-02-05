@@ -238,8 +238,8 @@ export default function Page() {
       "look at the little ceati facis 🥺",
       "u neo lovi me? 😭",
       "u must clicki yesi 💔",
-      "ceatis are cryin rn… 🥺",
-      "naur button is shy 🙈",
+      "neo make the ceatis cri 🥺",
+      "naur button is shyi 🙈",
     ],
     []
   );
