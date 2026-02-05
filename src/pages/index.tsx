@@ -276,6 +276,63 @@ export default function Page() {
     return () => window.clearTimeout(t);
   }, [accepted]);
 
+  useEffect(() => {
+    const HEARTS = ["💖", "💗", "💞", "💕", "💓", "💘", "💝"];
+
+    // ensure there's a dedicated layer to avoid collision with other overlays
+    const getLayer = () => {
+      let layer = document.getElementById('cuti-heart-layer');
+      if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'cuti-heart-layer';
+        layer.style.cssText = 'position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:99999;';
+        document.body.appendChild(layer);
+      }
+      return layer as HTMLDivElement;
+    };
+
+    const onClick = (e: MouseEvent) => {
+      // only left clicks
+      if (e.button !== 0) return;
+      const el = e.target as Element | null;
+      // don't spawn hearts when clicking on interactive elements or opt-out areas
+      if (
+        el &&
+        el.closest(
+          'a, button, input, textarea, select, summary, label, [role="button"], [role="link"], [contenteditable], [data-no-heart]'
+        )
+      )
+        return;
+
+      const x = e.clientX;
+      const y = e.clientY;
+      const heart = document.createElement('span');
+      heart.className = 'cuti-heart';
+      heart.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+      const size = 14 + Math.floor(Math.random() * 32);
+      heart.style.position = 'absolute';
+      heart.style.left = `${x}px`;
+      heart.style.top = `${y}px`;
+      heart.style.fontSize = `${size}px`;
+      heart.style.setProperty('--rot', `${(Math.random() - 0.5) * 60}deg`);
+      const layer = getLayer();
+      // ensure we remove the heart when its animation completes (with a timeout fallback)
+      const cleanup = () => {
+        heart.removeEventListener('animationend', cleanup);
+        if (heart.parentNode) heart.parentNode.removeChild(heart);
+        clearTimeout(fallback);
+      };
+
+      heart.addEventListener('animationend', cleanup);
+      const fallback = window.setTimeout(cleanup, 1500);
+
+      layer.appendChild(heart);
+    };
+
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
+
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-pink-50 via-rose-50 to-rose-100 flex items-center justify-center p-6">
       <PawPattern />
