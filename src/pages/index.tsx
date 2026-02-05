@@ -244,7 +244,7 @@ export default function Page() {
 
   const moveNo = () => {
     const nextX = clamp(Math.floor((Math.random() - 0.5) * 320), -170, 170);
-    const nextY = clamp(Math.floor((Math.random() - 0.5) * 220), -110, 110);
+    const nextY = clamp(Math.floor((Math.random() - 0.5) * 160), -80, 80);
     setNoPos({ x: nextX, y: nextY });
   };
 
